@@ -1,4 +1,4 @@
-from flask import Flask, session, render_template
+from flask import Flask, session, render_template, request, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -26,13 +26,21 @@ def get_nanodegrees():
     return catalog
 
 
-@app.route("/enrollment")
-def index():
-    catalog = get_nanodegrees()
-    print(catalog.keys())
-    return 'Hi :)'
+@app.route("/enrollment", methods=['GET', 'POST'])
+def enrollment():
+    catalogs = get_nanodegrees()
+    if request.method == 'POST':
+        nanodegree_key = request.args.get('key')
+        udacity_user_key = '1'
+        status = 'ENROLLED'
+        db.execute("INSERT INTO enrollments (nanodegree_key, udacity_user_key, status) VALUES (:nanodegree_key, :udacity_user_key, :status)",
+                    {"nanodegree_key": nanodegree_key, "udacity_user_key": udacity_user_key, "status": status})
+        db.commit()
+        return redirect(url_for('enrollment'))
+
+    return render_template('index.html', catalogs=catalogs)
 
 
 if __name__ == '__main__':
     app.secret_key = 'super_secret_key'
-    app.run(host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')

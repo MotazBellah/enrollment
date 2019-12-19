@@ -15,8 +15,8 @@ def main():
             enrollment_id TEXT NOT NULL DEFAULT nextval('enrollments_id_seq') PRIMARY KEY,
             nanodegree_key TEXT,
             udacity_user_key TEXT,
-            enrolled_at DATE,
-            status TEXT
+            enrolled_at DATE NOT NULL DEFAULT CURRENT_DATE,
+            status TEXT NOT NULL DEFAULT 'UNENROLLED'
             );
 
             ALTER SEQUENCE enrollments_id_seq
