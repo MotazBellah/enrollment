@@ -13,6 +13,8 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
 def get_nanodegrees():
     catalog_url = "https://catalog-api.udacity.com/v1/degrees"
     h = httplib2.Http()
@@ -39,6 +41,7 @@ def enrollment():
         return redirect(url_for('enrollment'))
 
     return render_template('index.html', catalogs=catalogs)
+    # return render_template('index2.html', catalogs=catalogs)
 
 
 if __name__ == '__main__':
