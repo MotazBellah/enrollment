@@ -40,7 +40,7 @@ def enrollment():
         db.commit()
         return redirect(url_for('enrollment'))
 
-    return render_template('index.html', catalogs=catalogs)
+    return render_template('index.html', catalogs=catalogs.keys()[0])
     # return render_template('index2.html', catalogs=catalogs)
 
 
